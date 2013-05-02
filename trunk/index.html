@@ -1,0 +1,79 @@
+<html>
+<style type="text/css">
+* {
+color: white;
+font-family: Tahoma, Geneva, sans-serif;
+text-shadow: 2px 2px #000000;
+
+
+}
+</style>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><!--jQuery added just for $(document).ready-->
+<script type="text/javascript" src="SECSY/entitymanager.js"></script>
+<script type="text/javascript" src="SECSY/entity.js"></script>
+<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="SECSY/Components/Component_Clock.js"></script>
+<script type="text/javascript" src="SECSY/Components/Component_Text.js"></script>
+<script type="text/javascript" src="SECSY/Components/Component_Transform.js"></script>
+<script type="text/javascript" src="SECSY/Components/Component_Sine.js"></script>
+<script type="text/javascript" src="SECSY/Components/Component_Rotate.js"></script>
+
+
+<script type="text/javascript">
+
+//Time object
+var Time = {"totalTime" : 0, "deltaTime" : 0};
+
+
+function initialize()
+{
+	//setup vendor animation frame
+	var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+					window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+	window.requestAnimationFrame = requestAnimationFrame;
+	
+	
+	//main entry point - main.js
+	main();
+	
+	//a base div to use as the parent
+	var viewport = $("#viewport");
+	
+	var lastTime = new Date().getTime();
+	lastTime = new Date().getTime();
+
+	//loop
+	function mainLoop()
+	{
+		var t = new Date().getTime();
+		var delta = (t - lastTime) / 1000;
+		lastTime = t;
+		Time.deltaTime = delta;
+		Time.totalTime = Time.totalTime + delta;
+		
+		//updates
+		EntityManager.update();
+
+		window.requestAnimationFrame(mainLoop);
+	}
+
+	mainLoop();
+}
+
+
+$(document).ready(function() 
+{
+	initialize();
+
+});
+
+
+
+
+</script>
+<body width="100%" height="100%">
+<div id="viewport" width="100%" height="100%"></div>
+</body>
+
+</html>
