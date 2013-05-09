@@ -25,13 +25,17 @@ Entity.prototype.update = function()
 		this.Components[c].update();
 	}
 	
-	//delete all components flagged for deletion
-	for (var i = 0; i < this.deleteList.length; i++) {
-		this.Components[this.deleteList[i]].detach();
-		delete this.Components[this.deleteList[i]];
+	//check if there is anything to delete
+	if (this.deleteList.length) {
+		//delete all components flagged for deletion
+		for (var i = 0; i < this.deleteList.length; i++) {
+			this.Components[this.deleteList[i]].detach();
+			delete this.Components[this.deleteList[i]];
+		}
+		
+		this.deleteList = new Array();
 	}
 	
-	this.deleteList = new Array();
 	
 };
 
