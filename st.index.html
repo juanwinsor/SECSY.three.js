@@ -1,0 +1,203 @@
+<html>
+<style type="text/css">
+* {
+color: white;
+font-family: Tahoma, Geneva, sans-serif;
+text-shadow: 2px 2px #000000;
+
+
+}
+</style>
+
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
+<script type="text/javascript" src="Dependencies/jquery.min.js"></script>
+<script type="text/javascript" src="Dependencies/Three.js"></script>
+<script type="text/javascript" src="Renderer/renderer.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_gravity.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_controller.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_box.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_floor.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_billboardsprite_animated.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_billboardsprite_static.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_rotateY.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_spotlight.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_particle_fire.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_sway.js"></script>
+<script type="text/javascript" src="ComponentModel/Components/component_firefly.js"></script>
+<script type="text/javascript" src="ComponentModel/entitymanager.js"></script>
+<script type="text/javascript" src="ComponentModel/entity.js"></script>
+<script type="text/javascript">
+
+
+//Time object
+var Time = {"totalTime" : 0, "deltaTime" : 0};
+var PI = 3.14;
+
+
+function initialize()
+{
+	//setup the three.js renderer and scene
+	CustomRenderer.initialize(document.body.clientWidth, document.body.clientHeight);
+	
+	
+	
+	/*
+	
+	//create a prop
+	var obeliskEntity = EntityManager.createEntity();
+	obeliskEntity.Name = "obelisk";
+	obeliskBillboard = obeliskEntity.addComponent("Component_BillboardSprite_Static");
+	obeliskBillboard.setImage(THREE.ImageUtils.loadTexture("images/obelisk.png"), new THREE.Vector2(0.5, 2.4));
+	obeliskEntity.Position = new THREE.Vector3(5, 1, -6);
+	//create the floor
+	var floorEntity = EntityManager.createEntity();
+	floorEntity.Name = "floor";
+	floorEntity.addComponent("Component_Floor");
+	floorEntity.Position = new THREE.Vector3(0, -0.5, -4);
+	//create an entity
+	var boxEntity = EntityManager.createEntity();	
+	boxEntity.Name = "ent1";
+	//add box and rotateY component to the entity
+	boxEntity.addComponent("Component_Box");
+	boxEntity.addComponent("Component_RotateY");
+
+	//create an entity for the animated billboard sprite
+	var billboardSpriteAnimated = EntityManager.createEntity();
+	billboardSpriteAnimated.Name = "billboardSpriteAnimated";
+	//add billboard sprite component	
+	//var playerBillboard = billboardSpriteAnimated.addComponent("Component_BillboardSprite_Animated");
+	var playerBillboard = billboardSpriteAnimated.addComponent("Component_BillboardSprite_Static");
+	playerBillboard.setImage(THREE.ImageUtils.loadTexture("images/megaman.png"), new THREE.Vector2(0.5, 0.5));
+	billboardSpriteAnimated.Position = new THREE.Vector3(0, 1, 0);
+	billboardSpriteAnimated.addComponent("Component_Gravity");
+	billboardSpriteAnimated.addComponent("Component_Controller");
+	
+	*/
+	
+	
+	//background
+	var background = EntityManager.createEntity();
+	background.Name = "background";
+	var backgroundBillboard = background.addComponent("Component_BillboardSprite_Static");
+	backgroundBillboard.setImage(THREE.ImageUtils.loadTexture("images/nightsky.png"), new THREE.Vector2(150, 150));
+	background.Position = new THREE.Vector3(0, 5, -10);
+	
+	
+	for (var i = 0; i < 10; i++) {
+		//firefly
+		var firefly = EntityManager.createEntity();
+		firefly.Name = "firefly";
+		var fireflyBillboard = firefly.addComponent("Component_BillboardSprite_Static");
+		fireflyBillboard.setImage(THREE.ImageUtils.loadTexture("images/firefly.png"), new THREE.Vector2(0.5, 0.5));
+		firefly.Position = new THREE.Vector3(0, 1, -5);
+		firefly.addComponent("Component_Firefly");
+	}
+	
+	
+	
+	
+	
+	//create a grass plane
+	var grassplane = EntityManager.createEntity();
+	grassplane.Name = "grass1";
+	var grassBillboard = grassplane.addComponent("Component_BillboardSprite_Static");
+	grassBillboard.setImage(THREE.ImageUtils.loadTexture("images/grass_foreground.png"), new THREE.Vector2(3, 3));
+	grassplane.Position = new THREE.Vector3(0, 1.0, 0);
+	//grassplane.addComponent("Component_Sway");
+	
+	var grassplaneLeft = EntityManager.createEntity();
+	grassplaneLeft.Name = "grass2";
+	var grassLeftBillboard = grassplaneLeft.addComponent("Component_BillboardSprite_Static");
+	grassLeftBillboard.setImage(THREE.ImageUtils.loadTexture("images/grass_foreground.png"), new THREE.Vector2(3, 3));
+	grassplaneLeft.Position = new THREE.Vector3(-3, 1.0, 0);
+	//grassplaneLeft.addComponent("Component_Sway");
+	
+	var grassplaneRight = EntityManager.createEntity();
+	grassplaneRight.Name = "grass3";
+	var grassRightBillboard = grassplaneRight.addComponent("Component_BillboardSprite_Static");
+	grassRightBillboard.setImage(THREE.ImageUtils.loadTexture("images/grass_foreground.png"), new THREE.Vector2(3, 3));
+	grassplaneRight.Position = new THREE.Vector3(3, 1.0, 0);
+	//grassplaneRight.addComponent("Component_Sway");
+	
+	//create background grass plane
+	var grassplane2 = EntityManager.createEntity();
+	grassplane2.Name = "grass4";
+	var grassBillboard2 = grassplane2.addComponent("Component_BillboardSprite_Static");
+	grassBillboard2.setImage(THREE.ImageUtils.loadTexture("images/grass_midground.png"), new THREE.Vector2(3, 3));
+	grassplane2.Position = new THREE.Vector3(0, 0.8, -0.6);
+	grassplane2.addComponent("Component_Sway");
+	
+	var grassplane2Left = EntityManager.createEntity();
+	grassplane2Left.Name = "grass5";
+	var grassLeftBillboard2 = grassplane2Left.addComponent("Component_BillboardSprite_Static");
+	grassLeftBillboard2.setImage(THREE.ImageUtils.loadTexture("images/grass_midground.png"), new THREE.Vector2(3, 3));
+	grassplane2Left.Position = new THREE.Vector3(-3, 0.8, -0.6);
+	grassplane2Left.addComponent("Component_Sway");
+	
+	var grassplane2Right = EntityManager.createEntity();
+	grassplane2Right.Name = "grass6";
+	var grassRightBillboard2 = grassplane2Right.addComponent("Component_BillboardSprite_Static");
+	grassRightBillboard2.setImage(THREE.ImageUtils.loadTexture("images/grass_midground.png"), new THREE.Vector2(3, 3));
+	grassplane2Right.Position = new THREE.Vector3(3, 0.8, -0.6);
+	grassplane2Right.addComponent("Component_Sway");
+	
+	
+	//create light source
+	var light = EntityManager.createEntity();
+	light.Name = "lightsource";
+	light.addComponent("Component_Spotlight");
+	//light.Position = new THREE.Vector3(170, 300, -160);
+	light.Position = new THREE.Vector3(50, 20, 50);
+	
+	/*
+	
+	//create fire particles
+	var fireParticlesEntity = EntityManager.createEntity();	
+	fireParticlesEntity.Name = "fire";	
+	fireParticlesEntity.addComponent("Component_Particle_Fire");
+	fireParticlesEntity.Position = new THREE.Vector3(0, 0, 0);
+	
+	*/
+	
+	var lastTime = new Date().getTime();
+
+	//loop
+	function gameLoop()
+	{		
+		var t = new Date().getTime();
+		var delta = (t - lastTime) / 1000;
+		lastTime = t;
+		Time.deltaTime = delta;
+		Time.totalTime = Time.totalTime + delta;
+
+		
+		//updates
+		EntityManager.update(delta);
+
+		//draw
+		CustomRenderer.render();
+
+		window.requestAnimationFrame(gameLoop, CustomRenderer.renderer.domElement);
+	}
+
+	gameLoop();
+}
+
+
+$(document).ready(function() 
+{
+	initialize();
+
+});
+
+
+
+
+</script>
+
+<body>
+
+
+</body>
+
+</html>
