@@ -1,4 +1,3 @@
-//component template
 function Component_Sine()
 {
 	this.Owner = null;

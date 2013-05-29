@@ -1,4 +1,3 @@
-//component template
 function Component_Transform()
 {
 	this.Owner = null;

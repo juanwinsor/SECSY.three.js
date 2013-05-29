@@ -46,11 +46,12 @@ function initialize()
 	//loop
 	function mainLoop()
 	{
+		//populate time object
 		var t = new Date().getTime();
 		var delta = (t - lastTime) / 1000;
 		lastTime = t;
 		Time.deltaTime = delta;
-		Time.totalTime = Time.totalTime + delta;
+		Time.totalTime += delta;
 		
 		//updates
 		EntityManager.update();
@@ -65,10 +66,7 @@ function initialize()
 $(document).ready(function() 
 {
 	initialize();
-
 });
-
-
 
 
 </script>

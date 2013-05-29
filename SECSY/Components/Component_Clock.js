@@ -1,4 +1,3 @@
-//component template
 function Component_Clock()
 {
 	this.Owner = null;
